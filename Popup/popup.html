@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <title>Ticket erstellen</title>
+  <style>
+    body{font-family:Arial,sans-serif;width:300px;padding:12px}
+    h1{font-size:16px;margin:0 0 10px}
+    label{font-size:12px;color:#333}
+    input,select,textarea,button{width:100%;box-sizing:border-box;margin:6px 0 12px;padding:8px}
+    textarea{min-height:90px;resize:vertical}
+    .btn{background:#2e7d32;color:#fff;border:1px solid #1b5e20;border-radius:4px;cursor:pointer}
+    .btn:disabled{opacity:.6;cursor:not-allowed}
+    .help{font-size:11px;color:#666;margin-top:-8px;margin-bottom:8px}
+    #status{font-size:12px;margin-top:4px}
+  </style>
+</head>
+<body>
+  <h1>Ticket erstellen</h1>
+
+  <label for="email">E-Mail *</label>
+  <input id="email" type="email" placeholder="name@firma.de" required />
+
+  <label for="requestType">Request Type *</label>
+  <input id="requestType" type="text" placeholder="z. B. Software Requirement" />
+
+  <label for="priority">Priority *</label>
+  <select id="priority">
+    <option value="">– bitte wählen –</option>
+    <option>Minor Issue</option>
+    <option>Major Issue</option>
+    <option>Not Urgent</option>
+  </select>
+  <div class="help">Werte müssen exakt den Picklist-Optionen im Formular entsprechen.</div>
+
+  <label for="subject">Request Subject *</label>
+  <input id="subject" type="text" placeholder="Kurzer Betreff" />
+
+  <label for="description">Request Description *</label>
+  <textarea id="description" placeholder="Beschreibung des Problems"></textarea>
+
+  <label for="statusField">Status *</label>
+  <select id="statusField">
+    <option>New Ticket</option>
+  </select>
+
+  <button id="submit" class="btn">Absenden</button>
+  <div id="status"></div>
+
+  <script src="popup.js"></script>
+</body>
+</html>

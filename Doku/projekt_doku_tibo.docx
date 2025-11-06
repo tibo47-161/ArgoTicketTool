@@ -1,0 +1,262 @@
+Kapitel 1 – Einleitung
+
+Im Rahmen der Umschulung zum Fachinformatiker für Anwendungsentwicklung 
+bei der GFN GmbH wird im Zeitraum vom 22.10.2025 bis 10.12.2025 eine 
+betriebliche Projektarbeit bei der Argo Aviation GmbH durchgeführt.
+
+Ziel dieser Projektarbeit ist die Entwicklung einer Google Chrome 
+Extension, die es ermöglicht, direkt aus dem Browser heraus Support-
+Tickets zu erstellen und diese automatisiert in das bestehende Zoho 
+Creator Ticketsystem des Unternehmens zu übertragen.
+
+Das Projekt soll den bisherigen Prozess der Ticketerstellung, der 
+aktuell mehrere manuelle Schritte umfasst, optimieren und 
+vereinfachen. Dabei wird sowohl die technische Umsetzung der 
+Erweiterung als auch die Integration in die bestehende Infrastruktur 
+des Unternehmens betrachtet.
+
+
+
+Kapitel 2 – Projektbeschreibung
+
+Derzeit müssen Mitarbeiter der Argo Aviation GmbH zur Erstellung eines 
+Support-Tickets die Zoho Creator-Webanwendung manuell aufrufen, sich 
+anmelden und anschließend ein Formular ausfüllen. Dieser Vorgang 
+unterbricht den Arbeitsfluss, da der Nutzer die aktuelle Aufgabe 
+verlassen und mehrere Schritte durchführen muss, bevor das Ticket 
+erstellt werden kann.
+
+Die zu entwickelnde Chrome Extension „Ticket Tool" soll diesen Prozess 
+deutlich beschleunigen. Über ein kompaktes Popup-Fenster im Browser 
+können Mitarbeiter künftig direkt ein Ticket mit Titel, Beschreibung 
+und Priorität anlegen, ohne die aktuelle Webseite zu verlassen. Nach 
+dem Absenden wird das Ticket automatisch über die Zoho Creator REST 
+API an das Ticketsystem übertragen und dort gespeichert.
+
+Die Anwendung wird mit HTML, CSS und JavaScript (ES6) entwickelt. Für 
+die Kommunikation mit Zoho wird die Fetch API genutzt. Die fertige 
+Extension soll eine schnelle, stabile und benutzerfreundliche Lösung 
+für alltägliche Support-Aufgaben bieten und so die Produktivität der 
+Mitarbeiter erhöhen.
+
+
+
+Kapitel 3 – Ist-Analyse
+
+Derzeit erfolgt die Erstellung von Support-Tickets bei der Argo 
+Aviation GmbH über zwei verschiedene Wege: entweder per E-Mail an 
+eine interne Supportadresse oder über die Zoho Creator-Webanwendung. 
+Beide Varianten sind funktional, jedoch mit einem vergleichsweise hohen 
+manuellen Aufwand verbunden und führen zu einer deutlichen Unterbrechung 
+des Arbeitsflusses.
+
+1. Ticket-Erstellung per E-Mail
+
+Für technische oder organisatorische Probleme existiert eine zentrale 
+E-Mail-Adresse, die automatisch mit dem internen Ticketsystem in Zoho 
+Creator verknüpft ist. Wenn ein Mitarbeiter ein neues Ticket erfassen 
+möchte, muss er eine E-Mail an diese Adresse senden und den Sachverhalt 
+möglichst genau beschreiben.
+
+Damit das Ticket vollständig im System angelegt werden kann, sind meist 
+mehrere manuelle Schritte notwendig:
+
+- Öffnen des E-Mail-Programms oder Webmails (ca. 10–15 Sekunden)
+- Formulieren einer Betreffzeile (oft als Ticket-Titel verwendet) 
+  (ca. 10 Sekunden)
+- Beschreiben des Problems im Textfeld (inkl. Fehlerdetails oder 
+  Screenshots) (ca. 1–2 Minuten)
+- Anhängen von Dateien oder Screenshots (sofern vorhanden) 
+  (ca. 20–30 Sekunden)
+- Abschicken der E-Mail an die Ticketadresse (ca. 5 Sekunden)
+
+Anschließend wird die E-Mail automatisch von Zoho Creator verarbeitet 
+und als Datensatz im internen Ticketsystem angelegt.
+
+Durchschnittliche Dauer: etwa 2–3 Minuten pro Ticket
+
+Probleme und Schwachstellen bei der E-Mail-Erfassung:
+
+- Zeitaufwändig, besonders bei kleinen Anliegen
+- Fehleranfällig (fehlende Priorität, unklare Beschreibung)
+- Hoher Kontextwechsel: Mitarbeiter müssen die Arbeitsumgebung wechseln
+- Umständlich bei Routineaufgaben – Aufwand oft unverhältnismäßig
+
+2. Ticket-Erstellung über die Zoho Creator-Weboberfläche
+
+Alternativ können Mitarbeiter Tickets direkt über die Weboberfläche von 
+Zoho Creator anlegen. Die Anwendung muss manuell im Browser aufgerufen 
+werden. Nach einem Login-Vorgang öffnet der Benutzer das Formular zur 
+Ticketerstellung und füllt es aus.
+
+Ablauf:
+
+- Öffnen eines neuen Browser-Tabs (ca. 5–10 Sekunden)
+- Aufrufen der internen Zoho Creator-URL (ca. 10–20 Sekunden)
+- Anmeldung mit Benutzerkonto (bei abgelaufener Sitzung erforderlich) 
+  (ca. 30–60 Sekunden)
+- Auswahl des Moduls „Ticketsystem“ (ca. 10–15 Sekunden)
+- Ausfüllen der Formularfelder (Titel, Beschreibung, Priorität usw.) 
+  (ca. 1–2 Minuten)
+- Absenden und Speichern des Formulars (ca. 5 Sekunden)
+
+Durchschnittliche Dauer: etwa 2–4 Minuten pro Ticket
+
+Probleme und Schwachstellen bei der Web-Erfassung:
+
+- Mehrere Schritte erforderlich, bevor ein Ticket erstellt werden kann
+- Häufige erneute Anmeldung (Session Timeout)
+- Ablenkung vom eigentlichen Arbeitskontext
+- Längerer Zeitaufwand bei Routineaufgaben
+- Geringe Motivation, kleine Probleme zu dokumentieren
+
+3. Vergleich der beiden Verfahren
+
+- E-Mail-Ticket
+  - Schritte: 5–6
+  - Durchschnittliche Dauer: 2–3 Minuten
+  - Hauptprobleme: Kontextwechsel, fehleranfällig, hoher Aufwand
+
+- Zoho-Webformular
+  - Schritte: ca. 6
+  - Durchschnittliche Dauer: 2–4 Minuten
+  - Hauptprobleme: viele Klicks, erneute Anmeldung, Ladezeiten
+
+4. Fazit des Ist-Zustands
+
+Der aktuelle Prozess ist zwar funktional, jedoch nicht effizient. Sowohl 
+die E-Mail-Lösung als auch die manuelle Erfassung über Zoho Creator 
+führen zu hohem Zeitaufwand und zu häufigen Unterbrechungen im 
+Arbeitsfluss. Bei kleineren Aufgaben verzichten viele Mitarbeiter darauf, 
+ein Ticket zu erstellen, da der Dokumentationsaufwand unverhältnismäßig 
+hoch ist. Dies führt zu Lücken in der Nachvollziehbarkeit, verminderter 
+Datenqualität und Erschwernissen bei der Auswertung von Supportaufwänden.
+
+Eine integrierte Browser-Erweiterung, die Tickets über ein kompaktes 
+Popup-Fenster anlegt und automatisch an die Zoho Creator REST API 
+überträgt, würde den Prozess deutlich vereinfachen. Dadurch ließen sich 
+Zeitverluste vermeiden, die Dokumentationsrate erhöhen und die 
+Transparenz der internen Supportvorgänge verbessern. Die erwartete 
+Zeitersparnis pro Ticketerstellung liegt bei rund 1,5 bis 3 Minuten, 
+was bei regelmäßigem Einsatz eine erhebliche Effizienzsteigerung bedeutet.
+Die beschriebenen Zeitangaben basieren auf internen Erfahrungswerten im 
+alltäglichen Supportprozess.
+
+
+Kapitel 4 – Soll-Konzept
+
+Ziel des Projekts ist die Entwicklung einer Google Chrome Extension, 
+die es ermöglicht, direkt aus dem Browser heraus Tickets im internen 
+Zoho Creator Ticketsystem zu erstellen. Dadurch soll der aktuell 
+mehrstufige Prozess über E-Mail oder Webformular ersetzt und der 
+Aufwand für die Dokumentation von Supportfällen erheblich reduziert 
+werden. 
+Die Kommunikation mit der API erfolgt asynchron, um Ladezeiten im 
+Popup zu minimieren.
+
+Zielzustand / geplanter Ablauf:
+
+- Mitarbeiter klickt im Browser auf das „Ticket Tool“-Icon.
+- Ein kompaktes Popup-Fenster öffnet sich innerhalb des Browsers.
+- Der Benutzer trägt Titel, Beschreibung und Priorität ein.
+- Nach Klick auf „Absenden“ wird der Eintrag automatisch über die
+  Zoho Creator REST API an das interne Ticketsystem übertragen.
+- Eine Erfolgsmeldung bestätigt die Erstellung.
+- Optional: wiederkehrende Eingaben lokal speichern (z. B. Name, Abteilung).
+
+Ziele des Soll-Zustands:
+
+- Reduzierung des Zeitaufwands für die Ticketerstellung auf unter 30 Sekunden
+- Vermeidung von Kontextwechseln zwischen Anwendungen
+- Erhöhung der Dokumentationsrate um mindestens 20 %
+- Verbesserung der Nachvollziehbarkeit interner Supportleistungen
+
+Technische Anforderungen und Verhalten:
+
+- Der gesamte Prozess soll ohne zusätzlichen Login innerhalb der
+  Extension ablaufen (Single Sign-On oder vorhandene Session nutzen
+  (abhängig von bestehender Zoho-Authentifizierung)).
+- Die Verbindung zu Zoho Creator erfolgt über eine gesicherte API-
+  Kommunikation (HTTPS, Authentifizierungstoken).
+- Das System validiert Eingaben vor der Übertragung und zeigt im
+  Fehlerfall verständliche Fehlermeldungen an.
+- Lokale Speicherung sensibler Daten nur verschlüsselt und optional.
+- Die Benutzeroberfläche soll leicht verständlich und responsiv sein.
+
+Erwartetes Ergebnis:
+
+Die Extension reduziert Zeitaufwand und Kontextwechsel, erhöht die
+Dokumentationsrate und verbessert die Datenqualität. Dadurch werden
+Supportprozesse transparenter und effizienter.
+
+
+
+Kapitel 5 – Anforderungen nach MoSCoW
+
+Zur Definition der funktionalen und nicht-funktionalen Anforderungen wird die 
+MoSCoW-Methode verwendet. Sie unterscheidet zwischen Muss-, Soll-, Kann- und 
+Nicht-Anforderungen (Won't). Durch diese Priorisierung lassen sich die 
+Projektziele klar strukturieren und die Umsetzung im vorgesehenen Zeitrahmen 
+von 80 Stunden realistisch planen.
+
+Muss-Anforderungen
+
+Diese Anforderungen sind zwingend notwendig, um die Kernfunktionalität der 
+Chrome Extension sicherzustellen. Ohne ihre Umsetzung wäre das Projektziel 
+nicht erreicht.
+
+| Nr. | Anforderung | Beschreibung |
+|-----|-------------|--------------|
+| 1 | Popup-Formular | Das Popup enthält Eingabefelder für Titel, Beschreibung und Priorität eines Tickets. |
+| 2 | Datenvalidierung | Alle Eingaben müssen auf Vollständigkeit geprüft werden, um fehlerhafte oder unvollständige Übertragungen zu verhindern. |
+| 3 | API-Integration zu Zoho Creator | Die Extension kommuniziert über die Zoho Creator REST API (POST /records) mit dem bestehenden Ticketsystem. |
+| 4 | Fehler- und Erfolgsmeldungen | Nach erfolgreicher Übertragung wird eine Bestätigung im Popup angezeigt. Bei Fehlern erscheint eine entsprechende Fehlermeldung. |
+
+Soll-Anforderungen 
+
+Diese Anforderungen erhöhen die Benutzerfreundlichkeit und Sicherheit, sind 
+aber für die Grundfunktion nicht zwingend erforderlich.
+
+| Nr. | Anforderung | Beschreibung |
+|-----|-------------|--------------|
+| 1 | Lokale Speicherung von Benutzerpräferenzen | Wiederkehrende Daten können optional im Local Storage gespeichert werden. |
+| 2 | Automatische Vervollständigung | Häufig genutzte Begriffe oder Beschreibungen sollen automatisch vorgeschlagen werden. |
+| 3 | Responsives Design | Das Popup soll auf unterschiedlichen Bildschirmgrößen gut bedienbar bleiben. |
+| 4 | Sichere Verbindung | Alle Daten werden verschlüsselt über HTTPS mit gültigem Token übertragen. |
+
+Kann-Anforderungen
+
+Diese optionalen Erweiterungen können bei verbleibender Zeit umgesetzt werden.
+Sie dienen der Weiterentwicklung und dem zusätzlichen Komfort.
+
+| Nr. | Anforderung | Beschreibung |
+|-----|-------------|--------------|
+| 1 | Offline-Funktionalität | Bei fehlender Internetverbindung sollen Tickets lokal zwischengespeichert und später synchronisiert werden. |
+| 2 | Benachrichtigungssystem | Optional kann nach erfolgreicher Erstellung eine Desktop-Benachrichtigung erscheinen. |
+
+Wird-nicht-Anforderungen
+
+Diese Punkte sind bewusst vom Projektumfang ausgenommen, um die Umsetzung 
+innerhalb des vorgegebenen Zeitrahmens sicherzustellen.
+
+| Nr. | Anforderung | Beschreibung |
+|-----|-------------|--------------|
+| 1 | Benutzerverwaltung außerhalb Zoho | Benutzerkonten werden über Zoho Creator verwaltet. Keine eigene Benutzerverwaltung. |
+| 2 | Reporting / Auswertung | Statistische Analysen oder grafische Auswertungen sind nicht Bestandteil. |
+
+Begründung der Priorisierung
+
+Die Muss-Anforderungen bilden die Grundlage der Anwendung und gewährleisten, 
+dass Tickets direkt aus dem Browser heraus schnell, fehlerfrei und 
+automatisiert erstellt werden können.
+
+Die Soll- und Kann-Anforderungen verbessern die Benutzerfreundlichkeit, die 
+Performance und den Komfort, sind jedoch für die erste funktionsfähige Version 
+nicht zwingend notwendig.
+
+Die bewusste Abgrenzung der Nicht-Anforderungen stellt sicher, dass das 
+Projekt im festgelegten Umfang und Zeitrahmen vollständig abgeschlossen 
+werden kann.
+
+
+

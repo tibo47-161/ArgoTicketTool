@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <title>Ticket Tool – Optionen</title>
+  <style>
+    body{font-family:Arial,sans-serif;max-width:760px;padding:16px}
+    label{display:block;margin-top:10px}
+    input{width:100%;padding:8px;box-sizing:border-box;margin-top:4px}
+    button{margin-top:12px;padding:8px 12px}
+    #status{margin-top:8px;font-size:12px}
+  </style>
+</head>
+<body>
+  <h1>Optionen</h1>
+
+  <label>Zoho OAuth Token:
+    <input id="oauthToken" type="text" placeholder="Access Token (1h gültig)" />
+  </label>
+
+  <label>Client-ID:
+    <input id="clientId" type="text" placeholder="z. B. 1000.XXXX..." />
+  </label>
+
+  <label>Client Secret:
+    <input id="clientSecret" type="text" placeholder="geheimer Wert" />
+  </label>
+
+  <label>Refresh Token:
+    <input id="refreshToken" type="text" placeholder="1000.xxxxx (dauerhaft)" />
+  </label>
+
+  <div>
+    <button id="save">Speichern</button>
+    <button id="clear">Löschen</button>
+    <button id="show">Anzeigen</button>
+  </div>
+
+  <div id="status"></div>
+
+  <script src="options.js"></script>
+</body>
+</html>
