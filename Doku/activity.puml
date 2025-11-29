@@ -1,0 +1,62 @@
+@startuml
+!theme plain
+skinparam backgroundColor white
+
+start
+
+:Mitarbeiter klickt auf\nExtension-Icon;
+
+:Popup-Formular öffnet sich;
+
+:Mitarbeiter füllt Formular aus\n(E-Mail, Request Type, Priority,\nSubject, Description, Status);
+
+:Mitarbeiter klickt auf\n"Absenden"-Button;
+
+:Pflichtfelder validieren;
+
+if (Alle Pflichtfelder\nausgefüllt?) then (nein)
+  :Fehlermeldung anzeigen\n"Bitte alle Pflichtfelder ausfüllen";
+  stop
+else (ja)
+  :OAuth-Token und Konfiguration\naus Chrome Storage laden;
+  
+  if (Access-Token\nvorhanden?) then (nein)
+    :Fehlermeldung anzeigen\n"Kein Access Token gefunden";
+    stop
+  else (ja)
+    :JSON-Payload erstellen;
+    
+    :POST-Request an\nCloudflare Worker Proxy senden\n(mit OAuth-Token und Proxy-Secret);
+    
+    if (HTTP-Status 401?) then (ja)
+      if (Refresh-Token\nvorhanden?) then (ja)
+        :Neuen Access-Token über\nRefresh-Token anfordern;
+        
+        if (Token-Refresh\nerfolgreich?) then (ja)
+          :Neuen Access-Token\nim Storage speichern;
+          
+          :POST-Request erneut senden;
+        else (nein)
+          :Fehlermeldung anzeigen\n"Token-Refresh fehlgeschlagen";
+          stop
+        endif
+      else (nein)
+        :Fehlermeldung anzeigen\n"Authentifizierung fehlgeschlagen";
+        stop
+      endif
+    endif
+    
+    if (API-Response\nerfolgreich?) then (ja)
+      :Erfolgsmeldung anzeigen\n"Ticket erfolgreich erstellt";
+      
+      :Formularfelder leeren;
+      
+      stop
+    else (nein)
+      :Fehlermeldung mit Details anzeigen;
+      stop
+    endif
+  endif
+endif
+
+@enduml

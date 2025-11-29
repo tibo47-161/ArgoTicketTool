@@ -1,13 +1,6 @@
-/*
- * popup.js – erzeugt einen Datensatz in Zoho Creator (EU)
- * App: myargomrt / it
- * Form-Linkname: Support_Request
- * Felder: Email, Status, Priority, Request_Type, Request_Subject, Request_Description
- */
-
-// ----- Cloudflare-Worker-Proxy -----
+// Cloudflare-Worker-Proxy
 const PROXY_URL = "https://zoho-proxy.tobi196183.workers.dev";
-const PROXY_SECRET = "47Tibo_Proxy_Secret!";
+const PROXY_SECRET = "47Tibo_Proxy_Secret!"; //platzhalter
 
 
 const FIELD = {
@@ -92,7 +85,7 @@ document.getElementById("submit").addEventListener("click", async () => {
     }
   };
 
-  // ----- GEÄNDERT: POST geht an den Worker + Secret-Header -----
+  //GEÄNDERT: POST geht an den Worker + Secret-Header
   async function postRecord(token) {
     const r = await fetch(PROXY_URL, {
       method: "POST",
@@ -110,7 +103,7 @@ document.getElementById("submit").addEventListener("click", async () => {
   // 1. Versuch
   let result = await postRecord(accessToken);
 
-  // Wenn 401 → versuche Refresh
+  // Wenn 401, versuche Refresh
   if (!result.ok && result.status === 401 && refreshToken && clientId && clientSecret) {
     try {
       accessToken = await refreshAccessToken(clientId, clientSecret, refreshToken);

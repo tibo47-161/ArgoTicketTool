@@ -1,0 +1,66 @@
+@startuml
+!theme plain
+skinparam backgroundColor white
+
+package "Chrome Browser" {
+  
+  package "Ticket-Tool Extension" {
+    
+    component [manifest.json] as manifest
+    note right of manifest
+      Manifest Version 3
+      - Permissions: storage
+      - Host Permissions
+      - Service Worker
+    end note
+    
+    component [Service Worker\n(background.js)] as background
+    
+    package "Frontend" {
+      component [Popup\n(popup.html/js)] as popup
+      component [Options\n(options.html/js)] as options
+    }
+    
+    database "Chrome\nStorage API" as storage
+    
+    manifest --> background
+    manifest --> popup
+    manifest --> options
+    
+    popup --> storage : Token lesen/schreiben
+    options --> storage : Token verwalten
+    
+    popup ..> background : Event-Kommunikation
+  }
+  
+  interface "Chrome Extension API" as chromeapi
+  popup --> chromeapi
+  options --> chromeapi
+  background --> chromeapi
+}
+
+cloud "Internet" {
+  component [Cloudflare Worker\n(Proxy)] as proxy
+  note right of proxy
+    - CORS-Header setzen
+    - Proxy-Secret prüfen
+    - Request weiterleiten
+  end note
+  
+  component [Zoho Creator\nREST API] as zoho
+  note right of zoho
+    Endpoint:
+    /form/New_Support_Request
+    
+    Authentifizierung:
+    OAuth 2.0
+  end note
+  
+  component [Zoho OAuth\nToken Service] as oauth
+}
+
+popup --> proxy : HTTPS POST\n(JSON + OAuth-Token\n+ Proxy-Secret)
+proxy --> zoho : HTTPS POST\n(JSON + OAuth-Token)
+popup --> oauth : Token Refresh\n(bei 401-Fehler)
+
+@enduml

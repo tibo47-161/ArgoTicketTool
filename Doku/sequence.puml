@@ -1,0 +1,100 @@
+@startuml
+!theme plain
+skinparam backgroundColor white
+
+actor "Mitarbeiter" as user
+participant "Popup\n(popup.js)" as popup
+participant "Chrome\nStorage API" as storage
+participant "Cloudflare\nWorker Proxy" as proxy
+participant "Zoho Creator\nREST API" as zoho
+
+user -> popup: Formular ausfüllen und absenden
+activate popup
+
+popup -> popup: Pflichtfelder validieren
+note right: E-Mail, Request Type,\nPriority, Subject,\nDescription prüfen
+
+popup -> storage: OAuth-Token und\nKonfiguration laden
+activate storage
+storage --> popup: Token-Daten zurückgeben
+deactivate storage
+
+alt Access-Token nicht vorhanden
+  popup --> user: Fehlermeldung anzeigen
+else Access-Token vorhanden
+  popup -> popup: JSON-Payload erstellen
+  note right
+    {
+      "data": {
+        "Email": "...",
+        "Status": "New Ticket",
+        "Priority": "...",
+        "Request_Type": "...",
+        "Request_Subject": "...",
+        "Request_Description": "..."
+      }
+    }
+  end note
+  
+  popup -> proxy: POST-Request mit\nOAuth-Token und Proxy-Secret
+  activate proxy
+  
+  proxy -> proxy: X-Proxy-Auth Header prüfen
+  
+  alt Proxy-Secret ungültig
+    proxy --> popup: HTTP 403 Forbidden
+    popup --> user: Fehlermeldung anzeigen
+  else Proxy-Secret gültig
+    proxy -> proxy: CORS-Header setzen
+    
+    proxy -> zoho: POST-Request an\n/form/New_Support_Request\nweiterleiten
+    activate zoho
+    
+    alt OAuth-Token abgelaufen
+      zoho --> proxy: HTTP 401 Unauthorized
+      deactivate zoho
+      proxy --> popup: HTTP 401 Unauthorized
+      deactivate proxy
+      
+      popup -> storage: Refresh-Token laden
+      activate storage
+      storage --> popup: Refresh-Token
+      deactivate storage
+      
+      popup -> zoho: Token-Refresh-Request
+      activate zoho
+      zoho --> popup: Neuer Access-Token
+      deactivate zoho
+      
+      popup -> storage: Neuen Access-Token speichern
+      activate storage
+      storage --> popup: Gespeichert
+      deactivate storage
+      
+      popup -> proxy: POST-Request erneut\nmit neuem Token
+      activate proxy
+      proxy -> zoho: POST-Request weiterleiten
+      activate zoho
+    end
+    
+    alt Ticket erfolgreich erstellt
+      zoho --> proxy: HTTP 200 OK\n+ Ticket-ID
+      deactivate zoho
+      proxy --> popup: HTTP 200 OK
+      deactivate proxy
+      
+      popup -> popup: Formularfelder leeren
+      popup --> user: Erfolgsmeldung anzeigen\n"Ticket erfolgreich erstellt"
+    else Fehler bei Erstellung
+      zoho --> proxy: HTTP 4xx/5xx + Fehlermeldung
+      deactivate zoho
+      proxy --> popup: Fehlerdetails
+      deactivate proxy
+      popup --> user: Fehlermeldung mit Details anzeigen
+    end
+  end
+end
+
+deactivate popup
+
+@enduml

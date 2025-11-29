@@ -1,0 +1,50 @@
+@startuml
+!theme plain
+skinparam backgroundColor white
+skinparam actorStyle awesome
+
+left to right direction
+
+actor "Mitarbeiter" as user
+actor "Zoho Creator\nREST API" as zoho
+
+rectangle "Ticket-Tool Chrome-Extension" {
+  usecase "Ticket erstellen" as UC1
+  usecase "OAuth-Token\nkonfigurieren" as UC2
+  usecase "Token-Daten\nspeichern" as UC3
+  usecase "Token-Daten\nanzeigen" as UC4
+  usecase "Token-Daten\nlöschen" as UC5
+  usecase "Formulardaten\nvalidieren" as UC6
+  usecase "Access-Token\naktualisieren" as UC7
+  usecase "Ticket an API\nsenden" as UC8
+  usecase "Erfolg/Fehler\nanzeigen" as UC9
+}
+
+user --> UC1
+user --> UC2
+
+UC2 ..> UC3 : <<include>>
+UC2 ..> UC4 : <<extend>>
+UC2 ..> UC5 : <<extend>>
+
+UC1 ..> UC6 : <<include>>
+UC1 ..> UC8 : <<include>>
+UC1 ..> UC9 : <<include>>
+
+UC8 ..> UC7 : <<extend>>\nbei 401-Fehler
+
+UC8 --> zoho
+
+note right of UC7
+  Automatische Erneuerung
+  des Access-Tokens über
+  Refresh-Token bei Ablauf
+end note
+
+note bottom of UC8
+  Kommunikation erfolgt
+  über Cloudflare Worker
+  als Proxy (CORS)
+end note
+
+@enduml
